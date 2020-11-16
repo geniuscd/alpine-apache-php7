@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.12.1
 MAINTAINER Paul Smith <pa.ulsmith.net>
 
 # Add repos
@@ -54,6 +54,9 @@ RUN apk add php7-simplexml
 
 RUN cp /usr/bin/php7 /usr/bin/php \
     && rm -f /var/cache/apk/*
+
+RUN wget "https://github.com/DataDog/dd-trace-php/releases/download/0.50.0/datadog-php-tracer_0.50.0_noarch.apk"
+RUN apk add datadog-php-tracer_0.50.0_noarch.apk --allow-untrusted
 
 # Add apache to run and configure
 RUN sed -i "s/#LoadModule\ rewrite_module/LoadModule\ rewrite_module/" /etc/apache2/httpd.conf \

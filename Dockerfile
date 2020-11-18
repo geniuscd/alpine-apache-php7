@@ -4,6 +4,9 @@ MAINTAINER Paul Smith <pa.ulsmith.net>
 # Add repos
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
+RUN wget "https://github.com/DataDog/dd-trace-php/releases/download/0.50.0/datadog-php-tracer_0.50.0_noarch.apk"
+RUN apk add datadog-php-tracer_0.50.0_noarch.apk --allow-untrusted
+
 # Add basics first
 RUN apk update && apk upgrade && apk add \
 	bash apache2 php7-apache2 curl ca-certificates openssl openssh git php7 php7-phar php7-json php7-iconv php7-openssl tzdata openntpd nano
@@ -54,9 +57,6 @@ RUN apk add php7-simplexml
 
 RUN cp /usr/bin/php7 /usr/bin/php \
     && rm -f /var/cache/apk/*
-
-RUN wget "https://github.com/DataDog/dd-trace-php/releases/download/0.50.0/datadog-php-tracer_0.50.0_noarch.apk"
-RUN apk add datadog-php-tracer_0.50.0_noarch.apk --allow-untrusted
 
 # Add apache to run and configure
 RUN sed -i "s/#LoadModule\ rewrite_module/LoadModule\ rewrite_module/" /etc/apache2/httpd.conf \
